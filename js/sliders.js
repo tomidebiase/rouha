@@ -1,60 +1,74 @@
 // js/sliders.js
-// Carruseles de producto: .slider con .slide, .prev y .next
+// Slider de tarjetas de producto con delegación robusta
 
-function initSlider(sliderEl) {
-  const slides = Array.from(sliderEl.querySelectorAll(".slide"));
-  const prevBtn = sliderEl.querySelector(".prev");
-  const nextBtn = sliderEl.querySelector(".next");
+const $ = (s, c = document) => c.querySelector(s);
+const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
 
+function getSlides(card) {
+  // Soporta varios nombres de contenedor
+  const container =
+    card.querySelector(".slider") ||
+    card.querySelector(".slides") ||
+    card.querySelector(".galeria") ||
+    card;
+  const slides = $$(".slide", container);
+  return { container, slides };
+}
+
+function setActive(slides, index) {
+  slides.forEach((s, i) => s.classList.toggle("active", i === index));
+}
+
+function move(card, dir) {
+  const { slides } = getSlides(card);
   if (!slides.length) return;
 
-  let current = slides.findIndex(s => s.classList.contains("active"));
-  if (current === -1) current = 0;
-  show(current);
+  let i =
+    Number(card.dataset.slideIndex) ??
+    slides.findIndex((s) => s.classList.contains("active"));
+  if (isNaN(i) || i < 0) i = 0;
 
-  function show(index) {
-    slides.forEach((s, i) => s.classList.toggle("active", i === index));
-  }
+  i = (i + (dir === "next" ? 1 : -1) + slides.length) % slides.length;
+  card.dataset.slideIndex = i;
+  setActive(slides, i);
+}
 
-  function go(delta) {
-    current = (current + delta + slides.length) % slides.length;
-    show(current);
-  }
-
-  // Clicks
-  nextBtn && nextBtn.addEventListener("click", () => go(+1));
-  prevBtn && prevBtn.addEventListener("click", () => go(-1));
-
-  // Soporte teclado cuando el slider tiene foco
-  sliderEl.tabIndex = 0;
-  sliderEl.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight") go(+1);
-    if (e.key === "ArrowLeft") go(-1);
-  });
-
-  // Gestos táctiles básicos
-  let startX = 0;
-  sliderEl.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-  }, { passive: true });
-
-  sliderEl.addEventListener("touchend", (e) => {
-    const diff = e.changedTouches[0].clientX - startX;
-    if (Math.abs(diff) > 40) { // umbral
-      if (diff < 0) go(+1); else go(-1);
+// Inicializa todas las tarjetas: asegura un slide activo
+function initSlides() {
+  $$(".producto").forEach((card) => {
+    const { slides } = getSlides(card);
+    if (!slides.length) return;
+    const current = slides.findIndex((s) => s.classList.contains("active"));
+    if (current === -1) {
+      setActive(slides, 0);
+      card.dataset.slideIndex = 0;
+    } else {
+      card.dataset.slideIndex = current;
     }
-  }, { passive: true });
+  });
 }
 
-function initSliders() {
-  document.querySelectorAll(".slider").forEach(initSlider);
-}
+// Delegación: escucha clicks en cualquier flecha conocida
+document.addEventListener("click", (e) => {
+  const prev = e.target.closest(
+    '.prev, .arrow-left, .btn-prev, [data-dir="prev"]'
+  );
+  const next = e.target.closest(
+    '.next, .arrow-right, .btn-next, [data-dir="next"]'
+  );
+  if (!prev && !next) return;
 
-// Auto-inicio
+  const card = e.target.closest(".producto");
+  if (!card) return;
+
+  move(card, next ? "next" : "prev");
+});
+
+// Auto-init
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initSliders);
+  document.addEventListener("DOMContentLoaded", initSlides);
 } else {
-  initSliders();
+  initSlides();
 }
 
-export { initSliders };
+export {};
