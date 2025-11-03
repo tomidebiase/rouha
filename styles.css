@@ -1653,3 +1653,28 @@ model-viewer {
     max-width: 60%;
   }
 }
+/* 🔧 Imagen del modal — centrada y con tamaño estable */
+.modal-imagen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.modal-imagen img {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;
+  transition: opacity 0.3s ease;
+}
+
+/* 📱 Ajuste para mobile */
+@media (max-width: 600px) {
+  .modal-imagen img {
+    max-width: 180px;
+  }
+}
