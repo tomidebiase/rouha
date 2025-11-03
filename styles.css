@@ -1650,6 +1650,6 @@ model-viewer {
 }
 @media (max-width: 600px) {
   .modal-imagen img {
-    max-width: 70%;
+    max-width: 60%;
   }
 }
