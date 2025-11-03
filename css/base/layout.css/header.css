@@ -338,3 +338,157 @@ body.no-scroll { height: 100vh; overflow: hidden; }
     margin-top: .8rem !important;
   }
 }
+/* ===========================
+   iPhone XR (≤414px)
+   =========================== */
+@media (max-width: 414px) {
+  /* Evitar cualquier scroll lateral fantasma */
+  html, body { overflow-x: hidden; }
+
+  /* Nav centrado y limpio */
+  header .header-inner { padding: 10px 12px; }
+  header .nav-menu { gap: 14px; justify-content: center; }
+  header .nav-menu a { font-size: 14px; padding: 6px 2px; }
+
+  /* Ícono de carrito: visible, sin superponer */
+  .cart-icon {
+    top: 10px; right: 12px;
+    padding: 6px 10px; border-radius: 20px;
+  }
+  .cart-icon .cart-label { display: none; } /* solo bolita y contador */
+  #cart-count { width: 18px; height: 18px; font-size: 11px; }
+
+  /* Grid de productos: 2 columnas cómodas */
+  .productos-grid,
+  .grid-productos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0 12px;
+  }
+  .producto { border-radius: 10px; }
+
+  /* Slider dentro de la card: proporción estable */
+  .producto .slide img {
+    width: 100%;
+    height: 240px;         /* XR tiene buen alto, mostramos más */
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  /* Texto de la card */
+  .producto h2 { font-size: 14px; line-height: 1.25; margin: 8px 0 4px; }
+  .producto .precio { font-size: 14px; font-weight: 600; }
+  .producto .btn-comprar { width: 100%; padding: 8px 10px; font-size: 14px; }
+
+  /* MODAL: compacto, sin cortes */
+  #modal-compra.modal {
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 5vh 0 4vh !important;
+    overflow-y: auto !important;
+  }
+  #modal-compra .modal-contenido {
+    width: 92% !important; max-width: 380px !important;
+    border-radius: 12px !important;
+    padding: 12px !important; gap: 10px !important;
+    overflow-x: hidden !important;
+  }
+  #modal-compra .modal-imagen img {
+    width: 90% !important;
+    max-height: 26vh !important;
+    object-fit: contain !important;
+    border-radius: 10px !important;
+    margin: 0 auto 6px !important;
+  }
+  #modal-compra .modal-info h2 { font-size: 15px; margin-bottom: 4px; }
+  #modal-compra #modal-precio { font-size: 14px; margin-bottom: 6px; }
+  #modal-compra .titulo-talles { font-size: 14px; margin-bottom: 6px; }
+
+  #modal-compra .talles { gap: 6px; margin-bottom: 8px; }
+  #modal-compra .talles .talle { font-size: 13px; padding: 5px 9px; border-radius: 6px; }
+
+  #confirmar-compra { width: 100%; padding: 10px 12px; font-size: 14px; border-radius: 8px; }
+
+  /* Tabla de talles legible sin desbordes */
+  #modal-compra .tabla-talles { margin-top: 8px; border-radius: 8px; }
+  #modal-compra .tabla-talles h3,
+  #modal-compra .tabla-talles h4 { font-size: 14px; padding: 8px; }
+  #modal-compra .tabla-talles table {
+    width: 100% !important; min-width: 0 !important; table-layout: fixed !important; font-size: 13px;
+  }
+  #modal-compra .tabla-talles th, 
+  #modal-compra .tabla-talles td { padding: 8px 6px; word-break: break-word; }
+
+  /* ✕ grande y siempre visible */
+  #modal-compra .modal-contenido > .cerrar {
+    top: 8px !important; right: 8px !important;
+    width: 32px !important; height: 32px !important; font-size: 16px !important;
+  }
+}
+/* ===========================
+   Samsung Galaxy S22 (≤360px)
+   =========================== */
+@media (max-width: 360px) {
+  html, body { overflow-x: hidden; }
+
+  /* Nav todavía más compacto */
+  header .nav-menu { gap: 10px; }
+  header .nav-menu a { font-size: 13px; padding: 6px 2px; }
+
+  /* Carrito */
+  .cart-icon {
+    top: 8px; right: 10px;
+    padding: 6px 8px; border-radius: 18px;
+  }
+  #cart-count { width: 16px; height: 16px; font-size: 10px; }
+
+  /* Grid de productos: 2 columnas ajustadas */
+  .productos-grid,
+  .grid-productos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  /* Imagen de card más baja para no forzar scroll */
+  .producto .slide img {
+    height: 210px;         /* menos alto que en XR */
+  }
+
+  .producto h2 { font-size: 13px; margin: 6px 0 2px; }
+  .producto .precio { font-size: 13px; }
+  .producto .btn-comprar { font-size: 13px; padding: 8px; }
+
+  /* MODAL (más compacto que XR) */
+  #modal-compra.modal {
+    padding: 5vh 0 4vh !important;
+  }
+  #modal-compra .modal-contenido {
+    width: 94% !important; max-width: 340px !important;
+    padding: 10px !important; gap: 8px !important; border-radius: 10px !important;
+  }
+  #modal-compra .modal-imagen img {
+    width: 88% !important; max-height: 24vh !important; object-fit: contain !important;
+  }
+  #modal-compra .modal-info h2 { font-size: 14px; }
+  #modal-compra #modal-precio { font-size: 13px; }
+  #modal-compra .titulo-talles { font-size: 13px; }
+
+  #modal-compra .talles { gap: 5px; }
+  #modal-compra .talles .talle { font-size: 12px; padding: 4px 8px; border-radius: 6px; }
+
+  #confirmar-compra { font-size: 13px; padding: 9px; }
+
+  /* Tabla compacta */
+  #modal-compra .tabla-talles h3, 
+  #modal-compra .tabla-talles h4 { font-size: 13px; padding: 7px; }
+  #modal-compra .tabla-talles table { font-size: 12.5px; }
+  #modal-compra .tabla-talles th, 
+  #modal-compra .tabla-talles td { padding: 7px 6px; }
+
+  /* ✕ visible */
+  #modal-compra .modal-contenido > .cerrar {
+    width: 30px !important; height: 30px !important; font-size: 15px !important;
+  }
+}
