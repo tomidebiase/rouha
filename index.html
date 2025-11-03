@@ -1083,30 +1083,30 @@ carrito.forEach(item => {
     .catch(err => console.error('Error cargando tablas:', err));
 </script>
 <script>
-  // 🔹 Ocultar el nav cuando se abre el modal de compra y volver a mostrarlo al cerrar
-  const modalCompra = document.getElementById('modal-compra');
-  const headerNav = document.querySelector('header.navbar');
-  const cerrarModalBtn = document.querySelector('.cerrar');
+  // 🔹 Detectar el modal de compra y el header
+  const modalCompra = document.getElementById("modal-compra");
+  const cerrarModal = document.querySelector(".cerrar");
+  const headerNav = document.querySelector("header.navbar");
 
-  // Al abrir el modal (cuando se hace clic en cualquier botón de "Comprar")
-  document.querySelectorAll('.btn-comprar').forEach(btn => {
-    btn.addEventListener('click', () => {
-      headerNav.style.display = 'none'; // Oculta el nav
-    });
-  });
-
-  // Al cerrar el modal (clic en la X)
-  cerrarModalBtn.addEventListener('click', () => {
-    headerNav.style.display = 'block'; // Vuelve a mostrar el nav
-  });
-
-  // También si se hace clic fuera del modal
-  window.addEventListener('click', (e) => {
-    if (e.target === modalCompra) {
-      headerNav.style.display = 'block';
+  // Observa cambios en la visibilidad del modal
+  const observer = new MutationObserver(() => {
+    if (modalCompra.style.display === "flex" || modalCompra.style.display === "block") {
+      headerNav.classList.add("ocultar-nav");
+    } else {
+      headerNav.classList.remove("ocultar-nav");
     }
   });
+
+  observer.observe(modalCompra, { attributes: true, attributeFilter: ["style"] });
+
+  // Asegurarse también al cerrar manualmente
+  if (cerrarModal) {
+    cerrarModal.addEventListener("click", () => {
+      headerNav.classList.remove("ocultar-nav");
+    });
+  }
 </script>
+
 
 
 </body>

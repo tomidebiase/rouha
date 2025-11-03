@@ -455,12 +455,22 @@ html, body, * {
   width: 90%;
   animation: fadeIn 0.4s ease;
 }
+/* Centrar imagen en el modal de producto */
+.modal-imagen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 
 .modal-imagen img {
-  width: 300px;
-  border-radius: 10px;
-  object-fit: cover;
+  max-width: 90%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
 }
+
 
 .modal-info h2 {
   margin: 0 0 0.5rem 0;
@@ -1632,4 +1642,14 @@ model-viewer {
   backdrop-filter: blur(4px);
   justify-content: center;
   align-items: center;
+}
+.ocultar-nav {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease;
+}
+@media (max-width: 600px) {
+  .modal-imagen img {
+    max-width: 70%;
+  }
 }
