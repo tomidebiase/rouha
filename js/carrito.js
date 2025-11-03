@@ -145,7 +145,7 @@ function bindFinalizar() {
       mensaje += `• ${item.nombre} - ${item.precio}%0A${detalle}%0A%0A`;
     });
     mensaje += "📍 La Plata, Buenos Aires%0A💬 Quisiera confirmar mi pedido.";
-    window.open(`https://wa.me/5492494662486?text=${mensaje}`, "_blank");
+    window.open(`https://wa.me/5492215064057?text=${mensaje}`, "_blank");
   });
 }
 
