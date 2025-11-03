@@ -92,3 +92,15 @@ hr {
 /* Reset útil para listas y links (aplica a todo el sitio) */
 ul, ol { list-style: none; padding: 0; margin: 0; }
 a { color: inherit; text-decoration: none; }
+/* Congela el scroll sin saltar al tope (para modales) */
+body.modal-open {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+}
+/* global.css */
+body.modal-open {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+}

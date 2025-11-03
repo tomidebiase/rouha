@@ -1,16 +1,29 @@
 // js/carrito.js
-// Carrito: agregar desde el modal, renderizar, eliminar, abrir/cerrar, WhatsApp
 
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
 let carrito = [];
 
-// ---------- Nodos requeridos (tolerante a inyección del header) ----------
+// ===== Scroll lock =====
+function lockScroll() {
+  const y = window.scrollY || document.documentElement.scrollTop || 0;
+  document.body.dataset.scrollY = String(y);
+  document.body.classList.add("modal-open");
+  document.body.style.top = `-${y}px`;
+}
+function unlockScroll() {
+  const y = parseInt(document.body.dataset.scrollY || "0", 10);
+  document.body.classList.remove("modal-open");
+  document.body.style.top = "";
+  window.scrollTo(0, y);
+}
+
+// ===== Nodos =====
 function getNodes() {
   return {
     btnAgregar: $("#confirmar-compra"),
-    cartCount:  $("#cart-count"),
+    cartCount: $("#cart-count"),
     modalCarrito: $("#modal-carrito"),
     cerrarCarrito: $(".cerrar-carrito"),
     carritoItems: $("#carrito-items"),
@@ -20,7 +33,7 @@ function getNodes() {
   };
 }
 
-// ---------- Render ----------
+// ===== Render =====
 function renderCarrito() {
   const { carritoItems, cartCount } = getNodes();
   if (!carritoItems || !cartCount) return;
@@ -30,20 +43,18 @@ function renderCarrito() {
     const row = document.createElement("div");
     row.className = "item-carrito";
     row.innerHTML = `
-      <img src="${item.imagen}" alt="${item.nombre}" style="width:60px; height:70px; object-fit:cover; border-radius:6px;">
+      <img src="${item.imagen}" alt="${item.nombre}" style="width:60px;height:70px;object-fit:cover;border-radius:6px;">
       <div>
         <h4>${item.nombre}</h4>
         <p class="precio">${item.precio}</p>
         <small>${[item.talle && `Talle: ${item.talle}`, item.color && `Color: ${item.color}`].filter(Boolean).join(" - ")}</small>
       </div>
-      <button class="btn-eliminar" data-index="${index}" aria-label="Eliminar del carrito">🗑️</button>
+      <button class="btn-eliminar" data-index="${index}">🗑️</button>
     `;
     carritoItems.appendChild(row);
   });
-
   cartCount.textContent = carrito.length;
 
-  // Eliminar ítem
   $$(".btn-eliminar", carritoItems).forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const i = Number(e.currentTarget.getAttribute("data-index"));
@@ -53,12 +64,13 @@ function renderCarrito() {
   });
 }
 
-// ---------- Agregar desde el modal de compra ----------
+// ===== Agregar =====
 function bindAgregar() {
-  const { btnAgregar, modalCompra, cartCount } = getNodes();
-  if (!btnAgregar || !modalCompra) return;
+  // Delegación: funciona aunque el botón se re-renderice
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("#confirmar-compra");
+    if (!btn) return;
 
-  btnAgregar.addEventListener("click", () => {
     const nombre = $("#modal-nombre")?.textContent || "";
     const precio = $("#modal-precio")?.textContent || "";
     const imagen = $("#modal-img")?.src || "";
@@ -68,76 +80,53 @@ function bindAgregar() {
     carrito.push({ nombre, precio, imagen, talle, color });
     renderCarrito();
 
-    // ✅ Cerrar modal de compra inmediatamente
-    modalCompra.setAttribute("data-open", "0");
-    modalCompra.style.display = "none";
-    document.body.classList.remove("no-scroll");
+    // ✅ cerrar modal de compra SIEMPRE
+    const modalCompra = $("#modal-compra");
+    if (modalCompra) {
+      modalCompra.setAttribute("data-open", "0");
+      modalCompra.style.display = "none";
+    }
+    // ✅ restaurar scroll
+    if (typeof unlockScroll === "function") unlockScroll();
 
-    // ✅ Feedback: bump del contador + toast
-    if (cartCount) {
-      cartCount.classList.add("bump");
-      setTimeout(() => cartCount.classList.remove("bump"), 300);
+    // feedback
+    const count = $("#cart-count");
+    if (count) {
+      count.classList.add("bump");
+      setTimeout(() => count.classList.remove("bump"), 300);
     }
     showToast("Agregado al carrito");
   });
 }
 
-/* Toast simple y reutilizable */
-function showToast(msg = "Agregado al carrito") {
-  const old = document.querySelector(".rouha-toast");
-  if (old) old.remove();
 
-  const t = document.createElement("div");
-  t.className = "rouha-toast";
-  t.textContent = msg;
-  document.body.appendChild(t);
-
-  // mostrar
-  requestAnimationFrame(() => t.classList.add("show"));
-  // ocultar y limpiar
-  setTimeout(() => {
-    t.classList.remove("show");
-    setTimeout(() => t.remove(), 220);
-  }, 1200);
-}
-
-
-// ---------- Abrir / Cerrar modal carrito (robusto) ----------
+// ===== Abrir/Cerrar =====
 function bindOpenClose() {
   const { modalCarrito } = getNodes();
-  if (!modalCarrito) return;
 
   const openCarrito = () => {
     renderCarrito();
     modalCarrito.style.display = "flex";
-    document.body.classList.add("no-scroll");   // bloquea scroll de fondo
+    lockScroll();
   };
-
   const closeCarrito = () => {
     modalCarrito.style.display = "none";
-    document.body.classList.remove("no-scroll"); // restaura scroll de fondo
+    unlockScroll();
   };
 
-  // Abrir desde el botón del header (delegación)
   document.addEventListener("click", (e) => {
-    if (e.target.closest(".cart-icon")) openCarrito();
-    if (e.target.closest(".cerrar-carrito")) closeCarrito(); // click en la X
+    const openBtn = e.target.closest(".cart-icon");
+    const closeBtn = e.target.closest(".cerrar-carrito");
+    if (openBtn) openCarrito();
+    if (closeBtn) closeCarrito();
   });
 
-  // Cerrar haciendo click en el overlay (fuera del contenido)
-  modalCarrito.addEventListener("click", (e) => {
+  window.addEventListener("click", (e) => {
     if (e.target === modalCarrito) closeCarrito();
-  });
-
-  // Cerrar con tecla ESC
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modalCarrito.style.display !== "none") {
-      closeCarrito();
-    }
   });
 }
 
-// ---------- Finalizar compra (WhatsApp) ----------
+// ===== Finalizar compra =====
 function bindFinalizar() {
   const { finalizarBtn } = getNodes();
   if (!finalizarBtn) return;
@@ -156,27 +145,17 @@ function bindFinalizar() {
       mensaje += `• ${item.nombre} - ${item.precio}%0A${detalle}%0A%0A`;
     });
     mensaje += "📍 La Plata, Buenos Aires%0A💬 Quisiera confirmar mi pedido.";
-
-    const numero = "5492494662486";
-    const url = `https://wa.me/${numero}?text=${mensaje}`;
-    window.open(url, "_blank");
+    window.open(`https://wa.me/5492494662486?text=${mensaje}`, "_blank");
   });
 }
 
-// ---------- Init ----------
+// ===== Init =====
 function initCarrito() {
   bindAgregar();
   bindOpenClose();
   bindFinalizar();
-
-  // fallback: asegurar que el botón del carrito sea visible
-  const { cartIcon } = getNodes();
-  if (cartIcon && (cartIcon.style.display === "" || cartIcon.style.display === "none")) {
-    cartIcon.style.display = "inline-flex";
-  }
 }
 
-// Auto-inicio cuando el DOM está listo
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initCarrito);
 } else {
