@@ -1540,44 +1540,86 @@ model-viewer {
     margin-top: -4rem; /* 👈 sube el botón Ingresar */
   }
 }
+/* ====== 💅 Modal mejorado para mobile ====== */
 @media (max-width: 768px) {
   .modal {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* 👈 el modal arranca arriba, no centrado verticalmente */
-    padding: 2rem 1rem;
+    align-items: flex-start;
+    padding: 1.2rem;
     overflow-y: auto;
+    background: rgba(0, 0, 0, 0.4); /* 👈 sutil oscurecimiento del fondo */
+    backdrop-filter: blur(4px);
   }
 
   .modal-contenido {
     width: 100%;
     max-width: 420px;
     background: #fff;
-    border-radius: 16px;
-    padding: 1rem 1.2rem 2rem;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+    animation: fadeUp 0.35s ease;
   }
 
+  /* ✨ Imagen principal */
   .modal-imagen img {
     width: 100%;
     height: auto;
-    max-height: 380px; /* 👈 ahora limita la altura */
-    object-fit: cover; /* 👈 llena el ancho sin deformar */
-    border-radius: 12px;
+    max-height: 340px;
+    object-fit: cover;
+    display: block;
   }
 
+  /* 🧾 Contenido del producto */
   .producto-info {
-    width: 100%;
+    padding: 1.4rem 1.2rem 2rem;
     text-align: left;
   }
 
+  .producto-info h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .producto-info p {
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .talles,
+  .colores {
+    margin-bottom: 1.2rem;
+  }
+
+  /* 🛒 Botón “Agregar al carrito” */
   #confirmar-compra {
     width: 100%;
-    max-width: 280px;
-    margin: 1.5rem auto 0;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.9rem;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+
+  #confirmar-compra:hover {
+    background: #222;
+    transform: scale(1.02);
+  }
+
+  /* ✨ Animación sutil */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
