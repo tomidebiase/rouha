@@ -42,3 +42,51 @@
     text-align: center;
   }
 }
+/* === Móvil genérico: que la imagen no se corte === */
+@media (max-width: 480px) {
+  /* El contenedor del slider define su alto por proporción, no por px */
+  .producto .slider,
+  .producto .slide {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;      /* 4:5 funciona muy bien para prendas */
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f6f5f1;      /* fondo neutro por si la imagen no llena */
+  }
+
+  /* La imagen llena el contenedor pero SIN recortarse */
+  .producto .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important;   /* << clave para no cortar */
+    display: block;
+  }
+
+  /* Flechas centradas verticalmente y dentro del área visible */
+  .producto .slider .prev,
+  .producto .slider .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+  .producto .slider .prev { left: 12px; }
+  .producto .slider .next { right: 12px; }
+}
+
+/* Afinado extra para Galaxy S22 (≤360) */
+@media (max-width: 360px) {
+  .producto .slider,
+  .producto .slide {
+    aspect-ratio: 3 / 4;   /* un poco más alto: cabe mejor en 360px */
+  }
+}
+
+/* Afinado extra para iPhone XR (≤414) */
+@media (max-width: 414px) {
+  .producto .slider,
+  .producto .slide {
+    aspect-ratio: 4 / 5;   /* XR tiene alto cómodo, mantenemos 4:5 */
+  }
+}
