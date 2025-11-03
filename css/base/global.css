@@ -1,0 +1,94 @@
+/* ===========================
+   GLOBAL STYLES - ROUHA
+   =========================== */
+
+/* Paleta de colores base */
+:root {
+  --color-bg: #ffffff;
+  --color-text: #000000;
+  --color-accent: #111111;
+  --color-gray: #f3f3f3;
+  --color-border: #d9d9d9;
+}
+
+/* Tipografía general */
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Enlaces */
+a {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+a:hover {
+  color: var(--color-accent);
+}
+
+/* Encabezados */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Botones */
+button {
+  background-color: var(--color-text);
+  color: #fff;
+  border-radius: 4px;
+  padding: 0.6rem 1.4rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+button:hover {
+  background-color: var(--color-accent);
+}
+
+/* Inputs y campos */
+input, textarea {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+  width: 100%;
+}
+
+/* Contenedores principales */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Separadores */
+hr {
+  border: none;
+  height: 1px;
+  background-color: var(--color-border);
+  margin: 2rem 0;
+}
+
+/* Transiciones suaves */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Textos utilitarios */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+/* Espaciados utilitarios */
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+/* Reset útil para listas y links (aplica a todo el sitio) */
+ul, ol { list-style: none; padding: 0; margin: 0; }
+a { color: inherit; text-decoration: none; }

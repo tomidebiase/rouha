@@ -1,0 +1,340 @@
+/* ===========================
+   HEADER (navbar + menú)
+   =========================== */
+
+.navbar {
+  background-color: #f6f2eb;
+  padding: 15px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Contenedor interno */
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* LOGO a la izquierda - NAV a la derecha */
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Logo */
+.logo-container img.logo-header,
+.logo {
+  height: 50px;
+  width: auto;
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  text-decoration: none;
+  color: #1b1b1b;
+  letter-spacing: 0.12em;
+}
+
+/* Menú principal */
+.main-nav .nav-menu {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 2.5rem; /* separa los items */
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav .nav-menu li {
+  display: inline-block;
+}
+
+.main-nav .nav-menu a {
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: #1b1b1b;
+  transition: color 0.3s ease;
+}
+
+.main-nav .nav-menu a:hover,
+.main-nav .nav-menu a.active {
+  color: #000;
+}
+
+/* Ocultar/mostrar header en scroll (si lo usás) */
+header.navbar {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+header.navbar.nav-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-inner {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .main-nav .nav-menu {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+/* --- Fix layout header: fila + menú a la derecha --- */
+header.navbar .header-inner{
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* separa logo | menú */
+}
+
+header.navbar .main-nav{
+  margin-left: auto;              /* empuja el menú a la derecha */
+}
+
+header.navbar .nav-menu{
+  display: flex;                  /* horizontal */
+  gap: 2.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+header.navbar .nav-menu li{
+  display: block;
+}
+
+header.navbar .nav-menu a{
+  text-decoration: none;
+  font-weight: 600;
+}
+/* Logo imagen (header) */
+.logo img.logo-header {
+  height: 80px;       /* 🔹 ajustá tamaño de alto */
+  width: auto;
+  display: block;
+  cursor: pointer;
+  object-fit: contain;
+  transition: transform 0.2s ease-in-out;
+}
+
+.logo img.logo-header:hover {
+  transform: scale(1.04);  /* 🔹 pequeño zoom al pasar el mouse */
+}
+/* ====== ROUHA - Cart pill en header ====== */
+.header-actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* empuja a la derecha */
+}
+
+.cart-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--rouha-card-bg, #fff);
+  border: 1.5px solid var(--color-brand, #A18978);
+  border-radius: 25px;
+  padding: 8px 14px;
+  box-shadow: var(--rouha-shadow, 0 6px 20px rgba(0,0,0,.08));
+  transition: transform .15s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+  cursor: pointer;
+  color: var(--rouha-ink, #1b1b1b);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cart-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.cart-label { font-size: .95rem; }
+
+.cart-count {
+  background: var(--color-brand, #A18978);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 700;
+  border-radius: 50%;
+  padding: 3px 7px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.cart-icon:hover {
+  background: var(--color-brand, #ffffff);
+  color: #000000;
+  box-shadow: var(--rouha-shadow-hover, 0 10px 28px rgba(0,0,0,.12));
+  transform: translateY(-2px);
+}
+
+@keyframes cart-bump {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+.cart-count.bump { animation: cart-bump .3s ease; }
+
+/* Mobile: versión compacta solo icono + badge */
+@media (max-width: 768px) {
+  .cart-icon {
+    padding: 8px;
+    border-radius: 50%;
+  }
+  .cart-label { display: none; }
+}
+/* header.css (Fragmento: Estilos para Iconos de Utilidad) */
+
+/* Estilo base de los botones de utilidad (incluye el carrito) */
+.util-icon-btn {
+    background: none; /* Sin fondo */
+    border: none;
+    cursor: pointer;
+    padding: var(--spacing-s); 
+    color: var(--color-text); /* Icono en color oscuro */
+    transition: color var(--transition-speed);
+    position: relative; 
+}
+
+/* Efecto Hover: Cambia a beige */
+.util-icon-btn:hover {
+    color: var(--color-brand-beige); 
+}
+
+/* Imagen del icono */
+.util-icon-btn .icon-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+/* Contador (El beige de ROUHA) */
+.cart-count {
+    position: absolute;
+    top: -5px; 
+    right: -5px; 
+    background-color: var(--color-brand-beige); /* ¡Beige de la marca! */
+    color: var(--color-bg); 
+    border-radius: 50%;
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    line-height: 18px; 
+    text-align: center;
+    font-weight: 700;
+}
+/* ===========================
+   NAV MOBILE CENTRADO (ROUHA)
+   =========================== */
+@media (max-width: 768px) {
+  /* Reestructura el header en columna */
+  .navbar .header-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  /* Centra el logo */
+  .navbar .logo {
+    order: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Menú debajo, centrado */
+  .navbar .main-nav {
+    order: 2;
+    width: 100%;
+  }
+
+  .navbar .nav-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .navbar .nav-menu li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .navbar .nav-menu a {
+    display: block;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  /* Carrito centrado al final */
+  .navbar .header-actions {
+    order: 3;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-left: 0 !important;
+  }
+
+  .navbar .cart-icon {
+    position: static !important;
+    margin: 6px auto 14px;
+    box-shadow: none;
+  }
+}
+/* Evita que el scroll de la página “empuje” el modal */
+.modal { overscroll-behavior: contain; }
+
+/* Bloquea el scroll del body cuando el modal esté abierto */
+body.no-scroll { height: 100vh; overflow: hidden; }
+
+/* ===== Ajuste específico para el modal de COMPRA en mobile ===== */
+@media (max-width: 768px){
+  /* acolchado del overlay para no pegarlo a los bordes */
+  #modal-compra.modal { padding: 16px !important; }
+
+  /* caja del modal: tamaño contenido, sin ocupar de más */
+  #modal-compra .modal-contenido{
+    width: 100% !important;
+    max-width: 360px !important;
+    max-height: 82vh !important;
+    overflow: auto !important;
+    padding: 16px !important;
+    border-radius: 12px !important;
+    gap: 14px !important;
+  }
+
+  /* imagen: controlamos altura para que no dispare el alto total */
+  #modal-compra .modal-imagen img{
+    width: 100% !important;
+    max-height: 38vh !important;
+    height: auto !important;
+    object-fit: cover !important;
+    margin: 0 auto 10px !important;
+    border-radius: 10px !important;
+  }
+
+  /* tipografías un pelín más chicas para compactar */
+  #modal-compra .modal-info h2{ font-size: 1.2rem !important; }
+  #modal-compra #modal-precio{ font-size: 1rem !important; margin-bottom: .6rem !important; }
+
+  /* botones y tabla */
+  #modal-compra #confirmar-compra{
+    width: 100% !important;
+    border-radius: 8px !important;
+    padding: .9rem !important;
+    font-size: 1rem !important;
+    margin-top: .6rem !important;
+  }
+  #modal-compra .tabla-talles{
+    margin-top: .8rem !important;
+  }
+}

@@ -1,0 +1,858 @@
+/* ===========================
+   MODAL DE COMPRA - SOLUCIÓN ROUHA FINAL
+   =========================== */
+
+/* Capa */
+.modal{
+  display:none; 
+  position:fixed; 
+  inset:0; 
+  z-index:1000;
+  background: var(--color-overlay, rgba(0, 0, 0, 0.6)); 
+  backdrop-filter: blur(4px);
+  justify-content:center; 
+  align-items:center; 
+  padding:var(--spacing-m, 1rem); 
+  overflow-y:auto;
+}
+
+/* Contenedor base (MOBILE FIRST) */
+.modal-contenido{
+  background:var(--color-fondo-claro, #F8F7F3); 
+  border-radius:12px;
+  
+  /* Layout en móvil: Columna (Stacking) */
+  display:flex; 
+  flex-direction:column; /* Imagen arriba, Info abajo */
+  
+  gap:var(--spacing-l, 2rem); 
+  align-items:center; 
+  padding:var(--spacing-l, 2rem); 
+  width:90%; 
+  max-width:900px; /* Será sobrescrito en desktop */
+  animation: fadeIn .35s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,.15); 
+  position: relative; 
+}
+
+/* Imagen (Mobile/Tablet) */
+.modal-imagen{ 
+  display:flex; justify-content:center; align-items:center; 
+  width:100%; 
+}
+.modal-imagen img{ 
+  width: 100%; 
+  max-width: 320px; 
+  height: auto; 
+  border-radius: 8px; 
+  box-shadow:0 3px 10px rgba(0,0,0,.1); 
+  display:block; 
+  margin:0 auto; 
+  object-fit:cover; 
+}
+
+/* Info (Mobile/Tablet) */
+.modal-info{ 
+  /* CRÍTICO: Evita que ocupe demasiado espacio y rompa el layout en desktop */
+  flex: 0 0 auto; 
+  min-width: unset; 
+  
+  display:flex; 
+  flex-direction:column; 
+  align-items:flex-start; 
+  justify-content:flex-start; 
+  position:relative; 
+  width: 100%; 
+}
+
+/* --- ESTILOS VISUALES ROUHA (Manteniendo la coherencia) --- */
+.modal-info h2{ font-size:1.5rem; margin-bottom:.3rem; color: var(--color-text); font-family: var(--font-display); }
+.modal-info p#modal-precio{ color:var(--color-brand-hover, #6E5B4B); font-weight:600; font-size:1.1rem; margin-bottom:var(--spacing-m, 1rem); }
+.talles{ display:flex; gap:var(--spacing-s, .6rem); margin-bottom:1.2rem; }
+.talles .talle{ background:var(--color-bg, #fff); border:1.5px solid var(--color-border, #ccc); border-radius:6px; padding:5px 10px; font-size:var(--font-size-sm, 14px); cursor:pointer; transition:all var(--transition-speed, .2s) ease; font-weight: 500;}
+.talles .talle:hover{ border-color:var(--color-brand-beige, #A18978); transform:scale(1.03); }
+.talles .talle.selected{ background:var(--color-brand-beige, #A18978); color:var(--color-bg, #ffffff); border-color:var(--color-brand-beige, #A18978); transform:scale(1.05); }
+.colores-container{ margin-top:.5rem; }
+.colores-container h3{ font-size:1rem; font-weight:600; margin-bottom:var(--spacing-s, .6rem); color: var(--color-text); }
+.colores-modal{ display:flex; flex-wrap:wrap; gap:var(--spacing-s, .6rem); margin-bottom:var(--spacing-l, 2rem); }
+.colores-modal .color{ width:28px; height:28px; border-radius:50%; border:1.5px solid var(--color-border); cursor:pointer; transition: transform var(--transition-speed), border-color var(--transition-speed); }
+.colores-modal .color:hover{ transform:scale(1.1); border-color:var(--color-brand-beige); }
+.colores-modal .color.selected{ border:2px solid var(--color-text); box-shadow: 0 0 0 2px var(--color-brand-beige); transform:scale(1.15); }
+#confirmar-compra{
+  align-self:flex-end; background:var(--color-brand-beige); color:var(--color-bg); 
+  border:0; padding:10px 20px; border-radius:6px; font-size:var(--font-size-md); 
+  font-weight:600; cursor:pointer; transition: background var(--transition-speed), transform var(--transition-speed); 
+  margin-top:auto;
+}
+#confirmar-compra:hover{ background:var(--color-brand-hover); transform: translateY(-1px); }
+@keyframes fadeIn{ from{opacity:0; transform: translateY(20px);} to{opacity:1; transform: translateY(0);} }
+
+/* 📱 Mobile tuning */
+@media (max-width: 768px){
+  .modal-contenido{ 
+    width:95%; max-width:420px; max-height: 90vh; border-radius:12px; 
+    overflow-y: auto; box-shadow:0 6px 24px rgba(0,0,0,.25); padding: var(--spacing-l); 
+  }
+  .modal-imagen img{ width:100%; max-height: 300px; object-fit: cover; margin-bottom: var(--spacing-m); }
+  .modal-info { min-width: unset; }
+  #confirmar-compra{ width:100%; border-radius:6px; padding:.9rem; }
+}
+
+
+/* 💻 SOLO DESKTOP (≥1024px): SOLUCIÓN FINAL DE LAYOUT Y TAMAÑO */
+/* 💻 SOLO DESKTOP (≥1024px): ACTIVACIÓN DE LAYOUT COMPACTO */
+@media (min-width: 1024px){
+  .modal{ padding:var(--spacing-m, 1rem); }
+  
+  .modal-contenido{
+    /* 🚨 1. ACTIVACIÓN DE GRID Y TAMAÑO */
+    max-width: 680px;  
+    max-height: 70vh;
+    width: 95%;
+    
+    /* 🚨 2. LAYOUT CRÍTICO: IMAGEN (1fr) | INFO (1.2fr) */
+    display: grid; 
+    grid-template-columns: 1fr 1.2fr; 
+    
+    gap: var(--spacing-l, 2rem); 
+    padding: var(--spacing-l, 2rem); 
+    
+    /* Reseteo de Flexbox para que Grid domine */
+    flex-direction: initial;
+    align-items: stretch; 
+    overflow-y: hidden;
+  }
+
+  /* IMAGEN (Columna Izquierda: 1fr) */
+  .modal-imagen{
+    align-items: center; 
+    justify-content: center;
+    width: 100%;
+    overflow: hidden; 
+  }
+  .modal-imagen img{ 
+    max-width: 100%; 
+    width: 100%;
+    height: 100%; 
+    max-height: none; 
+    object-fit: cover; 
+    box-shadow: none;
+  }
+
+  /* INFORMACIÓN (Columna Derecha: 1.2fr) */
+  .modal-info {
+      flex: 1; /* Permite que la columna se estire verticalmente */
+      
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; 
+      align-items: flex-start;
+      
+      overflow-y: auto; 
+      padding-right: var(--spacing-s, 0.5rem); 
+  }
+
+  /* Botón de cerrar */
+  .cerrar-modal {
+      position: absolute;
+      top: var(--spacing-m);
+      right: var(--spacing-m);
+      z-index: 10;
+  }
+}
+/* Saca el botón cerrar del flujo del grid */
+.modal-contenido { position: relative; } /* ya lo tenías, lo mantenemos */
+.modal-contenido > .cerrar {
+  position: absolute;
+  top: var(--spacing-m, 1rem);
+  right: var(--spacing-m, 1rem);
+  z-index: 10;
+  cursor: pointer;
+  line-height: 1;
+  font-size: 1.5rem;
+}
+
+/* Desktop: define áreas explícitas para que nunca cambie el orden */
+@media (min-width: 1024px){
+  .modal-contenido{
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    grid-template-areas: "img info";
+    gap: var(--spacing-l, 2rem);
+  }
+  .modal-imagen{ grid-area: img; }
+  .modal-info{ grid-area: info; }
+}
+#confirmar-compra {
+  align-self: flex-end;
+  background: var(--color-brand-beige);
+  color: #000000; /* ← este valor define el color del texto */
+  border: 0;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-speed), transform var(--transition-speed);
+  margin-top: auto;
+}
+/* --- Talles (versión refinada ROUHA) --- */
+.talles {
+  display: flex;
+  gap: var(--spacing-s, .6rem);
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.talles .talle {
+  background: var(--rouha-card-bg, #ffffff);
+  border: 1.5px solid var(--color-border, #ccc);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text, #1b1b1b);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,.05);
+}
+
+.talles .talle:hover {
+  border-color: var(--color-brand-beige, #A18978);
+  color: var(--color-brand-beige, #A18978);
+  transform: translateY(-1px);
+}
+
+.talles .talle.selected {
+  background: var(--color-brand-beige, #A18978);
+  color: #fff;
+  border-color: var(--color-brand-beige, #A18978);
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,.12);
+}
+/* ===========================
+   TABLAS DE TALLES - ESTILO ROUHA
+   =========================== */
+.tabla-talles {
+  margin-top: 1.5rem;
+  width: 100%;
+  background: var(--rouha-card-bg, #fff);
+  border-radius: 10px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.06);
+  overflow: hidden;
+  border: 1px solid var(--color-border, #ddd);
+  animation: fadeIn .4s ease;
+}
+
+.tabla-talles h3,
+.tabla-talles h4 {
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text, #1b1b1b);
+  padding: .8rem;
+  background: var(--color-brand-beige, #A18978);
+  color: #fff;
+  letter-spacing: .5px;
+}
+
+.tabla-talles table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.tabla-talles th,
+.tabla-talles td {
+  padding: .7rem .5rem;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+.tabla-talles th {
+  background: rgba(161,137,120,0.1);
+  font-weight: 600;
+  color: var(--color-text, #1b1b1b);
+}
+
+.tabla-talles tr:last-child td {
+  border-bottom: none;
+}
+
+/* Responsive: scroll horizontal si es muy ancha */
+@media (max-width: 600px) {
+  .tabla-talles {
+    overflow-x: auto;
+  }
+  .tabla-talles table {
+    min-width: 400px;
+  }
+}
+/* Ajuste fino del modal de producto (alineación visual) */
+.modal-info .colores-container {
+  margin-left: 1.5rem; /* mueve todo el bloque un poco a la derecha */
+}
+
+/* Si querés afinar más en pantallas grandes */
+@media (min-width: 1024px) {
+  .modal-imagen img {
+    margin-left: -10px; /* leve corrección óptica hacia la izquierda */
+  }
+}
+/* ===========================
+   🔧 OVERRIDES FINALES MOBILE (≤768px)
+   Fuerzan tamaño real del modal y la imagen
+   =========================== */
+@media (max-width: 768px) {
+  /* El overlay NO scrollea y centra la caja */
+  #modal-compra.modal {
+    padding: 12px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Caja del modal: límite de altura y sin scroll interno */
+  #modal-compra .modal-contenido {
+    width: 100% !important;
+    max-width: 360px !important;
+    max-height: 86vh !important;
+    overflow: hidden !important;
+    padding: 14px !important;
+    gap: 12px !important;
+    border-radius: 12px !important;
+  }
+
+  /* 👇 ESTA ES LA CLAVE: limitar la imagen de verdad */
+  #modal-compra .modal-imagen img {
+    width: 100% !important;
+    max-height: 36vh !important;   /* ajustá 36 → 34/32 si querés aún más chica */
+    height: auto !important;
+    object-fit: cover !important;
+    margin: 0 auto 10px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Tipos y botón un poco más compactos */
+  #modal-compra .modal-info h2 { font-size: 1.2rem !important; }
+  #modal-compra #modal-precio { font-size: 1rem !important; margin-bottom: 8px !important; }
+  #modal-compra #confirmar-compra { width: 100% !important; padding: .9rem !important; border-radius: 8px !important; }
+}
+/* ===========================
+   🚫 Sin scroll lateral en el modal (tabla)
+   =========================== */
+@media (max-width: 768px) {
+  /* Asegura que la caja del modal no desborde */
+  #modal-compra .modal-contenido {
+    box-sizing: border-box;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 360px !important;
+  }
+
+  /* La tarjeta/contendor de tabla no empuja el ancho */
+  #modal-compra .tabla-talles {
+    overflow-x: hidden !important;
+    width: 100% !important;
+  }
+
+  /* ❌ Override del min-width que causaba el scroll lateral */
+  #modal-compra .tabla-talles table {
+    width: 100% !important;
+    min-width: 0 !important;           /* <-- clave */
+    table-layout: fixed !important;     /* columnas se ajustan */
+    border-collapse: collapse;
+  }
+
+  /* Celdas más compactas + permiten corte de palabra */
+  #modal-compra .tabla-talles th,
+  #modal-compra .tabla-talles td {
+    padding: .6rem .4rem !important;
+    word-break: break-word;
+  }
+
+  /* Títulos de la tabla centrados y sin margen extra */
+  #modal-compra .tabla-talles h3,
+  #modal-compra .tabla-talles h4 {
+    margin: 0 !important;
+  }
+}
+/* ===========================
+   📱 MODO COMPACTO MOBILE (todo más chico sin cortar imagen)
+   =========================== */
+@media (max-width: 768px){
+
+  /* Contenedor general del modal */
+  #modal-compra .modal-contenido {
+    max-height: 88vh;           /* deja respirar */
+    width: 92%;
+    padding: 10px !important;
+    border-radius: 10px;
+    gap: 8px;
+  }
+
+  /* Imagen principal intacta */
+  #modal-compra .modal-imagen img {
+    width: 100%;
+    height: auto;
+    max-height: 38vh;           /* mantenemos buena visibilidad */
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+
+  /* Texto principal más compacto */
+  #modal-compra .modal-info h2 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+  #modal-compra #modal-precio {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  #modal-compra .titulo-talles {
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  /* Talles */
+  #modal-compra .talles {
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+  #modal-compra .talles .talle {
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    border-radius: 5px;
+  }
+
+  /* Botón Agregar al carrito */
+  #modal-compra #confirmar-compra {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+  }
+
+  /* Tabla de talles */
+  #modal-compra .tabla-talles {
+    margin-top: 6px;
+    border-radius: 8px;
+  }
+  #modal-compra .tabla-talles h3,
+  #modal-compra .tabla-talles h4 {
+    font-size: 0.9rem;
+    padding: 0.4rem;
+  }
+  #modal-compra .tabla-talles table {
+    table-layout: fixed;
+    width: 100%;
+    font-size: 0.85rem;
+  }
+  #modal-compra .tabla-talles th,
+  #modal-compra .tabla-talles td {
+    padding: 0.4rem 0.2rem;
+  }
+
+  /* X de cierre */
+  #modal-compra .modal-contenido > .cerrar {
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    font-size: 15px;
+  }
+}
+@media (max-width: 768px) {
+  #modal-compra .modal-contenido {
+    transform: scale(0.9);
+    transform-origin: top center;
+    max-height: 95vh;
+  }
+
+  #modal-compra .modal-info h2 {font-size: 1rem;}
+  #modal-compra #modal-precio {font-size: .9rem;}
+  #modal-compra .titulo-talles {font-size: .9rem;}
+  #modal-compra .talles .talle {font-size: .85rem; padding: 4px 8px;}
+  #modal-compra #confirmar-compra {font-size: .85rem; padding: .6rem;}
+  #modal-compra .tabla-talles table {font-size: .8rem;}
+  #modal-compra .tabla-talles th, 
+  #modal-compra .tabla-talles td {padding: .4rem .3rem;}
+}
+/* ===========================
+   📱 Modal adaptable en altura (sin cortar imagen)
+   =========================== */
+@media (max-width: 768px){
+
+  /* Modal general */
+  #modal-compra {
+    align-items: flex-start;      /* permite que crezca hacia abajo */
+    overflow-y: auto;             /* si el contenido pasa la pantalla, scroll solo dentro */
+    padding: 2vh 0;               /* margen visual arriba/abajo */
+  }
+
+  #modal-compra .modal-contenido {
+    width: 90%;
+    max-height: none !important;  /* elimina el límite que cortaba */
+    border-radius: 12px;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  /* Imagen se mantiene */
+  #modal-compra .modal-imagen img {
+    width: 100%;
+    max-height: 34vh;             /* un poco menos para ganar espacio */
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  /* Contenido más compacto */
+  #modal-compra .modal-info h2 { font-size: 1rem; margin-bottom: 4px; }
+  #modal-compra #modal-precio { font-size: .9rem; margin-bottom: 6px; }
+  #modal-compra .titulo-talles { font-size: .9rem; margin-bottom: 4px; }
+  #modal-compra .talles .talle { font-size: .85rem; padding: 4px 8px; }
+  #modal-compra #confirmar-compra { font-size: .85rem; padding: .6rem; }
+
+  /* Tabla más compacta */
+  #modal-compra .tabla-talles {
+    margin-top: 8px;
+    border-radius: 8px;
+  }
+  #modal-compra .tabla-talles table {
+    width: 100%;
+    font-size: .82rem;
+    table-layout: fixed;
+  }
+  #modal-compra .tabla-talles th,
+  #modal-compra .tabla-talles td {
+    padding: .4rem .3rem;
+  }
+}
+/* ===========================
+   📱 Imagen ajustada (mostrar persona completa sin cortar)
+   =========================== */
+@media (max-width: 768px) {
+  #modal-compra .modal-imagen img {
+    width: 90%;                   /* leve margen lateral */
+    max-height: 26vh;             /* antes 34vh: muestra más de la prenda */
+    height: auto;
+    object-fit: contain !important; /* muestra todo sin recortar */
+    border-radius: 10px;
+    margin: 0 auto 10px;
+    display: block;
+  }
+
+  /* Opcional: si el modal te queda con mucho espacio, bajá un poco más */
+  #modal-compra .modal-contenido {
+    padding: 12px;
+    gap: 10px;
+    align-items: center;
+  }
+}
+/* ===========================
+   📱 MODAL COMPACTO Y SIEMPRE VISIBLE (≤768px)
+   =========================== */
+@media (max-width: 768px){
+
+  /* El overlay deja aire arriba/abajo para que se vea la parte superior */
+  #modal-compra.modal{
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 6vh 0 4vh !important;   /* margen visual arriba/abajo */
+    overflow-y: auto;                 /* si se pasa, scroll SOLO del modal */
+  }
+
+  /* Caja más chica + escala general */
+  #modal-compra .modal-contenido{
+    width: 90% !important;
+    max-width: 360px !important;
+    max-height: none !important;      /* deja crecer si hay más filas */
+    padding: 12px !important;
+    gap: 10px !important;
+    border-radius: 12px !important;
+    transform: scale(.92);            /* ACHICA TODO sin cortar nada */
+    transform-origin: top center;
+    overflow-x: hidden;               /* sin scroll lateral */
+  }
+
+  /* Imagen: que se vea la persona completa, sin cortar */
+  #modal-compra .modal-imagen img{
+    width: 88% !important;
+    height: auto !important;
+    max-height: 24vh !important;      /* más baja para que entre todo */
+    object-fit: contain !important;
+    margin: 0 auto 8px !important;
+    border-radius: 10px !important;
+    display: block;
+  }
+
+  /* Tipos y paddings compactos */
+  #modal-compra .modal-info h2{ font-size: 1rem !important; margin-bottom: 4px !important; }
+  #modal-compra #modal-precio{ font-size: .9rem !important; margin-bottom: 6px !important; }
+  #modal-compra .titulo-talles{ font-size: .9rem !important; margin-bottom: 6px !important; }
+  #modal-compra .talles{ gap: 6px !important; margin-bottom: 8px !important; }
+  #modal-compra .talles .talle{ padding: 4px 8px !important; font-size: .85rem !important; border-radius: 6px !important; }
+  #modal-compra #confirmar-compra{ font-size: .9rem !important; padding: .7rem !important; border-radius: 8px !important; }
+
+  /* Tabla de talles compacta y sin desbordes */
+  #modal-compra .tabla-talles{ margin-top: 10px !important; border-radius: 10px !important; }
+  #modal-compra .tabla-talles h3, 
+  #modal-compra .tabla-talles h4{ font-size: .92rem !important; padding: .55rem !important; }
+  #modal-compra .tabla-talles table{ width: 100% !important; min-width: 0 !important; table-layout: fixed !important; font-size: .82rem !important; }
+  #modal-compra .tabla-talles th, 
+  #modal-compra .tabla-talles td{ padding: .45rem .3rem !important; word-break: break-word; }
+
+  /* ✕ grande y siempre visible, sin tap targets chicos */
+  #modal-compra .modal-contenido > .cerrar{
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    z-index: 9999 !important;
+    width: 32px !important; height: 32px !important;
+    display: inline-flex !important; align-items: center !important; justify-content: center !important;
+    font-size: 16px !important;
+    border-radius: 50%;
+    background: rgba(255,255,255,.75);
+    backdrop-filter: blur(2px);
+    cursor: pointer;
+  }
+}
+/* ===========================
+   MODAL DE COMPRA — ROUHA
+   Versión unificada y estable
+   =========================== */
+
+/* ── Estado y overlay ───────────────────────────────────────── */
+#modal-compra:not([data-open="1"]) { display: none !important; }   /* cerrado por defecto */
+#modal-compra.modal[data-open="1"] { display: flex !important; }   /* abierto solo con flag */
+
+.modal{
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--color-overlay, rgba(0, 0, 0, 0.6));
+  backdrop-filter: blur(4px);
+  display: none;                /* seguridad extra; se abre con data-open */
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-m, 1rem);
+}
+
+/* ── Caja base ──────────────────────────────────────────────── */
+.modal-contenido{
+  background: var(--color-fondo-claro, #F8F7F3);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-l, 2rem);
+  align-items: center;
+  padding: var(--spacing-l, 2rem);
+  width: 90%;
+  max-width: 900px;
+  animation: fadeIn .35s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,.15);
+  position: relative;
+}
+
+@keyframes fadeIn{ from{opacity:0; transform: translateY(20px);} to{opacity:1; transform: translateY(0);} }
+
+/* ── Imagen ────────────────────────────────────────────────── */
+.modal-imagen{ display:flex; justify-content:center; align-items:center; width:100%; }
+.modal-imagen img{
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,.1);
+  display: block;
+  margin: 0 auto;
+  object-fit: cover;
+}
+
+/* ── Info ──────────────────────────────────────────────────── */
+.modal-info{
+  flex: 0 0 auto;
+  min-width: unset;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:flex-start;
+  position:relative;
+  width: 100%;
+}
+
+.modal-info h2{ font-size:1.5rem; margin-bottom:.3rem; color: var(--color-text); font-family: var(--font-display); }
+.modal-info p#modal-precio{ color:var(--color-brand-hover, #6E5B4B); font-weight:600; font-size:1.1rem; margin-bottom:var(--spacing-m, 1rem); }
+
+/* Talles */
+.talles{ display:flex; gap:var(--spacing-s, .6rem); margin-bottom:1.2rem; flex-wrap:wrap; }
+.talles .talle{
+  background:#fff; border:1.5px solid var(--color-border, #ccc);
+  border-radius:8px; padding:6px 14px; font-size:0.95rem;
+  font-weight:500; color:var(--color-text, #1b1b1b);
+  cursor:pointer; transition:all .25s ease; box-shadow:0 2px 6px rgba(0,0,0,.05);
+}
+.talles .talle:hover{ border-color:var(--color-brand-beige,#A18978); color:var(--color-brand-beige,#A18978); transform:translateY(-1px); }
+.talles .talle.selected{ background:var(--color-brand-beige,#A18978); color:#fff; border-color:var(--color-brand-beige,#A18978); transform:scale(1.05); box-shadow:0 4px 10px rgba(0,0,0,.12); }
+
+/* Colores */
+.colores-container{ margin-top:.5rem; }
+.colores-container h3{ font-size:1rem; font-weight:600; margin-bottom:.6rem; color: var(--color-text); }
+.colores-modal{ display:flex; flex-wrap:wrap; gap:.6rem; margin-bottom:2rem; }
+.colores-modal .color{ width:28px; height:28px; border-radius:50%; border:1.5px solid var(--color-border); cursor:pointer; transition: transform .2s, border-color .2s; }
+.colores-modal .color:hover{ transform:scale(1.1); border-color:var(--color-brand-beige); }
+.colores-modal .color.selected{ border:2px solid var(--color-text); box-shadow: 0 0 0 2px var(--color-brand-beige); transform:scale(1.15); }
+
+/* Botón */
+#confirmar-compra{
+  align-self:flex-end; background:var(--color-brand-beige); color:#000;
+  border:0; padding:10px 20px; border-radius:6px; font-size:1rem;
+  font-weight:600; cursor:pointer; transition: background .2s, transform .2s;
+  margin-top:auto;
+}
+#confirmar-compra:hover{ background:var(--color-brand-hover, #6E5B4B); transform: translateY(-1px); }
+
+/* ✕ Cerrar */
+.modal-contenido > .cerrar{
+  position:absolute; top:10px; right:10px; z-index:9999;
+  width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center;
+  border-radius:50%; font-size:18px; cursor:pointer;
+  background: rgba(255,255,255,.75); backdrop-filter: blur(2px);
+}
+
+/* ── Tabla de talles ───────────────────────────────────────── */
+.tabla-talles{
+  margin-top: 1.5rem; width: 100%; background:#fff; border-radius:10px;
+  box-shadow:0 3px 12px rgba(0,0,0,.06); overflow:hidden; border:1px solid #ddd;
+  animation: fadeIn .4s ease;
+}
+.tabla-talles h3, .tabla-talles h4{
+  text-align:center; font-size:1.05rem; font-weight:700; color:#1b1b1b;
+  padding:.8rem; background: var(--color-brand-beige,#A18978); color:#fff; letter-spacing:.5px;
+}
+.tabla-talles table{ width:100%; border-collapse:collapse; font-size:.95rem; text-align:center; }
+.tabla-talles th, .tabla-talles td{ padding:.7rem .5rem; border-bottom:1px solid rgba(0,0,0,.08); }
+.tabla-talles th{ background: rgba(161,137,120,.1); font-weight:600; color:#1b1b1b; }
+.tabla-talles tr:last-child td{ border-bottom:none; }
+
+/* Evitar scroll lateral en pantallas estrechas */
+@media (max-width: 600px){
+  .tabla-talles{ overflow-x:hidden; }
+  .tabla-talles table{ min-width:0; table-layout: fixed; }
+}
+
+/* ── Desktop (≥1024px) — Grid imagen | info ───────────────── */
+@media (min-width: 1024px){
+  .modal{ padding:var(--spacing-m, 1rem); }
+  .modal-contenido{
+    max-width: 680px;  max-height: 70vh; width: 95%;
+    display: grid; grid-template-columns: 1fr 1.2fr; grid-template-areas: "img info";
+    gap: var(--spacing-l, 2rem); padding: var(--spacing-l, 2rem);
+    align-items: stretch; overflow-y: hidden;
+  }
+  .modal-imagen{ grid-area: img; align-items:center; justify-content:center; width:100%; overflow:hidden; }
+  .modal-imagen img{ max-width:100%; width:100%; height:100%; max-height:none; object-fit: cover; box-shadow:none; margin:0; }
+  .modal-info{ grid-area: info; flex:1; display:flex; flex-direction:column; justify-content:space-between; align-items:flex-start; overflow-y:auto; padding-right:.5rem; }
+  /* ajuste óptico leve */
+  .modal-imagen img{ margin-left:-10px; }
+}
+
+/* ── Mobile (≤768px) — compacto y visible ─────────────────── */
+@media (max-width: 768px){
+
+  /* Overlay: deja ver la parte superior y scrollea SOLO el modal si hace falta */
+  #modal-compra.modal{
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 6vh 0 4vh !important;
+    overflow-y: auto !important;
+  }
+
+  /* Caja compacta y sin desbordes laterales */
+  #modal-compra .modal-contenido{
+    width: 90% !important; max-width: 360px !important;
+    max-height: none !important; padding: 12px !important; gap: 10px !important;
+    border-radius: 12px !important; transform: scale(.92); transform-origin: top center;
+    overflow-x: hidden !important; box-sizing: border-box;
+  }
+
+  /* Imagen: persona completa, sin recorte */
+  #modal-compra .modal-imagen img{
+    width: 88% !important; height: auto !important; max-height: 24vh !important;
+    object-fit: contain !important; margin: 0 auto 8px !important; border-radius:10px !important; display:block;
+  }
+
+  /* Tipografías/paddings compactos */
+  #modal-compra .modal-info h2{ font-size: 1rem !important; margin-bottom: 4px !important; }
+  #modal-compra #modal-precio{ font-size: .9rem !important; margin-bottom: 6px !important; }
+  #modal-compra .titulo-talles{ font-size: .9rem !important; margin-bottom: 6px !important; }
+  #modal-compra .talles{ gap: 6px !important; margin-bottom: 8px !important; }
+  #modal-compra .talles .talle{ padding: 4px 8px !important; font-size: .85rem !important; border-radius: 6px !important; }
+  #modal-compra #confirmar-compra{ font-size: .9rem !important; padding: .7rem !important; border-radius: 8px !important; }
+
+  /* Tabla: fija, legible y sin empujar ancho */
+  #modal-compra .tabla-talles{ margin-top: 10px !important; border-radius: 10px !important; }
+  #modal-compra .tabla-talles h3, #modal-compra .tabla-talles h4{ font-size: .92rem !important; padding: .55rem !important; }
+  #modal-compra .tabla-talles table{ width:100% !important; min-width:0 !important; table-layout: fixed !important; font-size: .82rem !important; }
+  #modal-compra .tabla-talles th, #modal-compra .tabla-talles td{ padding: .45rem .3rem !important; word-break: break-word; }
+
+  /* ✕ grande y siempre visible */
+  #modal-compra .modal-contenido > .cerrar{
+    position: absolute !important; top: 8px !important; right: 8px !important; z-index: 9999 !important;
+    width: 32px !important; height: 32px !important; font-size: 16px !important;
+  }
+}
+
+/* ── Ajuste visual opcional de colores (desktop) ───────────── */
+.modal-info .colores-container{ margin-left: 1.5rem; }
+/* Botón principal: borde y realce en la paleta ROUHA */
+#confirmar-compra{
+  background: var(--color-brand-beige, #A18978);
+  color: #000;
+  border: 2px solid #A18978;        /* borde visible */
+  box-shadow: 0 6px 18px rgba(161,137,120,.25);
+  transition: transform .15s ease, box-shadow .15s ease, filter .2s;
+}
+#confirmar-compra:hover{
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(161,137,120,.35);
+}
+#confirmar-compra:active{
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(161,137,120,.2);
+}
+#confirmar-compra:focus-visible{
+  outline: 2px solid #A18978;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(161,137,120,.25);
+}
+
+/* Toast de confirmación (aparece 1s) */
+.rouha-toast{
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: #A18978;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  font-weight: 600;
+  font-size: .95rem;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4000;
+  transition: opacity .22s ease, transform .22s ease;
+}
+.rouha-toast.show{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* mini-animación del contador */
+@keyframes cart-bump { 0%{transform:scale(1)} 50%{transform:scale(1.25)} 100%{transform:scale(1)} }
+#cart-count.bump { animation: cart-bump .3s ease; }

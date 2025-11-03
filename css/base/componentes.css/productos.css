@@ -1,0 +1,86 @@
+/* ===========================
+   PRODUCTOS (cards + slider)
+   =========================== */
+
+.productos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2.5rem;
+  padding: 4rem 2rem;
+}
+
+.producto {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 320px;
+  min-height: 650px;
+  background: #f9f8f5;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,.1);
+  text-align: center;
+}
+
+/* Slider de producto */
+.slider {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  height: 420px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.slide { display: none; opacity: 0; transition: opacity .5s ease; }
+.slide.active { display: block; opacity: 1; }
+.slide img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+
+/* Flechas */
+.slider button{
+  position: absolute; top:50%; transform: translateY(-50%);
+  background: rgba(255,255,255,.8); border:0; font-size:1.5rem;
+  color:#000; cursor:pointer; border-radius:50%; width:30px; height:30px;
+  display:flex; align-items:center; justify-content:center;
+  transition: background .3s ease, color .3s ease;
+}
+.slider button:hover{ background:#000; color:#fff; }
+.slider .prev{ left:8px; } .slider .next{ right:8px; }
+
+/* Títulos / precios / CTA */
+.producto h2 { font-size:1.1rem; font-weight:600; margin-top:1rem; }
+.precio { color:#000; font-weight:700; margin:.5rem 0 1rem; }
+.producto button { background:#000; color:#fff; border:0; padding:.5rem 1.5rem; border-radius:6px; font-weight:600; cursor:pointer; transition:.3s ease; }
+.producto button:hover{ background:#000; }
+
+/* Selector de colores (decorativo en card) */
+.colores{ display:flex; justify-content:center; gap:.5rem; margin-bottom:1rem; pointer-events:none; opacity:.85; }
+.color{ width:22px; height:22px; border-radius:50%; border:1.5px solid #ccc; }
+
+/* Filas adicionales */
+.productos.fila-dos,
+.productos.fila-tres,
+.productos.fila-cuatro,
+.productos.fila-cinco{
+  display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-start;
+  gap:2.5rem; margin-bottom:4rem;
+}
+.productos.fila-dos{ margin-top:-4rem; }
+.productos.fila-tres{ margin-top:-4rem; }
+.productos.fila-cuatro{ margin-top:-8rem; }
+.productos.fila-cinco{ margin-top:-8rem; }
+
+/* Categorías */
+.categoria{ width:100%; padding:4rem 0; }
+.categoria-titulo{
+  text-align:center; font-size:2rem; font-weight:800; margin-bottom:2rem; color:#111; letter-spacing:1px; position:relative;
+}
+.categoria-titulo::after{ content:""; display:block; width:60px; height:4px; background:#000; margin:.6rem auto 0; border-radius:2px; }
+#mujer .categoria-titulo{ color:#000; }
+#mujer .categoria-titulo::after{ background:#000; }
+#hombre .categoria-titulo{ color:#333; }
+#hombre .categoria-titulo::after{ background:#333; }

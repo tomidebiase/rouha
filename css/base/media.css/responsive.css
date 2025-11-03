@@ -1,0 +1,44 @@
+/* ===========================
+   RESPONSIVE GLOBAL
+   =========================== */
+
+/* Productos */
+@media (max-width: 768px) {
+  .productos {
+    gap: 2rem;
+    padding: 2rem 1rem;
+  }
+  .producto {
+    width: 100%;
+    max-width: 320px;
+    padding: 1rem;
+  }
+  .slider {
+    height: 380px;
+  }
+}
+
+/* Header */
+@media (max-width: 768px) {
+  .header-inner {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .main-nav .nav-menu {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* Contacto */
+@media (max-width: 768px) {
+  .contacto {
+    padding: 60px 5%;
+  }
+  .contacto-texto {
+    font-size: 0.9rem;
+  }
+  .info-contacto {
+    text-align: center;
+  }
+}

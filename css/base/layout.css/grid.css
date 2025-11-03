@@ -1,0 +1,25 @@
+/* ===========================
+   GRID / CONTENEDORES
+   =========================== */
+
+/* Contenedor general reutilizable */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Utilitarios de espaciado vertical para secciones */
+.section { padding: 4rem 0; }
+.section-sm { padding: 2rem 0; }
+.section-lg { padding: 6rem 0; }
+
+/* Helpers de alineación (no pisan tus clases) */
+.center { display: grid; place-items: center; }
+.stack { display: grid; gap: 1rem; }
+
+/* Responsive helpers */
+@media (max-width: 768px) {
+  .section { padding: 2.5rem 0; }
+}

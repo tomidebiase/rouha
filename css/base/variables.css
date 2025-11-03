@@ -1,0 +1,54 @@
+/* ===========================
+   VARIABLES GLOBALES - ROUHA
+   =========================== */
+
+:root {
+  /* 🎨 Colores principales */
+  --color-bg: #ffffff;
+  --color-text: #000000;
+  --color-accent: #111111;
+  --color-muted: #f4f4f4;
+  --color-border: #d9d9d9;
+  --color-overlay: rgba(0, 0, 0, 0.6);
+
+  /* 💅 Colores específicos del sitio */
+  --color-rouha-gray: #8b8b8b;
+  --color-rouha-dark: #222222;
+  --color-rouha-light: #f9f9f9;
+  --color-hover: #333333;
+
+  /* 🖋 Tipografía */
+  --font-primary: "Poppins", sans-serif;
+  --font-secondary: "Inter", sans-serif;
+
+  /* 📏 Tamaños */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-xxl: 2rem;
+
+  /* 📐 Espaciados */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+  --space-xl: 4rem;
+
+  /* 🌑 Sombras */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+  /* 🔝 Z-index */
+  --z-navbar: 1000;
+  --z-modal: 1100;
+  --z-overlay: 999;
+  --z-tooltip: 1200;
+
+  /* ⏱ Transiciones */
+  --transition-fast: 0.2s ease-in-out;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}

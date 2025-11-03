@@ -1,0 +1,132 @@
+/* ===========================
+   INTRO (pantalla de bienvenida)
+   =========================== */
+
+/* ---- knobs para ajustar rápido (cambiá solo estos números) ---- */
+:root{
+  --bg-zoom: 100%;          /* 100% = cover normal | 120%, 140% = “zoomeado” */
+  --logo-size: 280px;       /* tamaño del <model-viewer> en desktop */
+  --logo-size-m: 180px;     /* tamaño en mobile */
+  --wordmark-width: 300px;  /* ancho del PNG “ROUHA” */
+  --stack-shift: -10px;     /* mover bloque (logo+palabra+botón): - sube / + baja */
+  --bg-size-desktop: 1200px; /* ajustá acá el “tamaño del mosaico” en desktop */
+  --bg-size-mobile: 700px;   /* ajustá acá el “tamaño del mosaico” en mobile */
+}
+
+/* === Fondo unificado SIN ::before === */
+#intro-container {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh; /* asegura cubrir la pantalla aun con zoom */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;                   /* más alto que el header/menu */
+  background: url("../../../fondo 1.jpg") center/cover no-repeat; /* desktop */
+  transition: opacity 1s ease;
+}
+
+@media (max-width: 768px){
+  #intro-container{
+    background-image: url("../../../fondomobile.jpg"); /* tu patrón mobile */
+    background-repeat: repeat;
+     background-position: center -336px; /* 🔹 NEGATIVO = sube | POSITIVO = baja */
+    background-size: 980px auto;       /* reduce “zoom” */
+    --bg-zoom-mobile: 100%;
+
+  }
+}
+
+
+/* Animación de salida (como ya la tenías) */
+#intro-container.visible { opacity: 1; }
+#intro-container.fade-out { animation: introFadeOut 1s forwards; }
+@keyframes introFadeOut { to { opacity: 0; visibility: hidden; } }
+
+
+/* Animación de salida */
+#intro-container.visible{ opacity: 1; }
+#intro-container.fade-out{ animation: introFadeOut 1s forwards; }
+@keyframes introFadeOut{ to{ opacity:0; visibility:hidden; } }
+
+/* Pila centrada */
+.logo-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  transform: translateY(var(--stack-shift));
+}
+
+/* Logo 3D */
+#logo3d{
+  width: var(--logo-size);
+  height: var(--logo-size);
+  background: transparent !important;
+  transform: translateY(50px); /* 👉 baja solo el logo */
+}
+
+/* Palabra “ROUHA” (imagen) */
+.intro-img{
+  width: min(70vw, var(--wordmark-width));
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 4px 24px rgba(0,0,0,.08));
+}
+
+/* Botón */
+#btn-entrar{
+  appearance: none;
+  border: 2px solid #b1aaa7;
+  border-radius: 999px;
+  padding: 16px 36px;          /* 🔹 más grande */
+  font-size: 1.05rem;          /* 🔹 texto más grande */
+  font-weight: 600;
+  letter-spacing: .5px;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  margin-top: -10px;           /* 🔹 sube el botón (valor negativo = subir) */
+  transition: transform .15s ease, opacity .2s ease, background .2s ease;
+}
+
+#btn-entrar:hover{ transform: translateY(-1px); background:#222; }
+#btn-entrar:active{ transform: translateY(0); opacity:.9; }
+
+/* Bloquear scroll mientras está la intro */
+body:has(#intro-container){ overflow: hidden; }
+/* === Mobile: replicar proporciones de desktop === */
+@media (max-width: 768px) {
+  :root{
+    --logo-size: 220px;
+    --wordmark-width: 360px;
+    --bg-zoom: 115%;
+    --stack-shift: 0px;
+  }
+
+  #logo3d{
+    transform: translateY(-18px);
+  }
+
+  #btn-entrar{
+    padding: 16px 36px;
+    font-size: 1.05rem;
+    margin-top: -8px;
+  }
+
+  .intro-img{
+    width: min(82vw, var(--wordmark-width));
+  }
+
+  /* 🔹 Ajustes finos de tamaño y posición */
+  .intro-img{
+    width: 50vw;       /* achica el logo de texto */
+    margin-top: -80px; /* negativo = sube | positivo = baja */
+  }
+
+  #btn-entrar{
+    padding: 10px 14px; /* achica el botón */
+    font-size: 0.9rem;  /* achica el texto del botón */
+    margin-top: -25px;  /* sube el botón */
+  }
+}

@@ -1,0 +1,84 @@
+/* ===========================
+   RESET BASE ROUHA
+   =========================== */
+
+/* Reinicio general */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Scroll suave y estructura base */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* Base del body */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Imágenes y vídeos siempre adaptables */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Enlaces sin subrayado por defecto */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Listas sin estilo base */
+ul, ol {
+  list-style: none;
+}
+
+/* Botones y formularios sin bordes */
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: 100%;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+/* Cursor pointer para botones */
+button {
+  cursor: pointer;
+}
+
+/* Transiciones suaves globales */
+* {
+  transition: all 0.25s ease-in-out;
+}
+
+/* Evita overflow lateral en móviles */
+html, body {
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Scrollbar minimalista (opcional, ya lo tenías similar) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
