@@ -1540,3 +1540,44 @@ model-viewer {
     margin-top: -4rem; /* 👈 sube el botón Ingresar */
   }
 }
+@media (max-width: 768px) {
+  .modal {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* 👈 el modal arranca arriba, no centrado verticalmente */
+    padding: 2rem 1rem;
+    overflow-y: auto;
+  }
+
+  .modal-contenido {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 1rem 1.2rem 2rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .modal-imagen img {
+    width: 100%;
+    height: auto;
+    max-height: 380px; /* 👈 ahora limita la altura */
+    object-fit: cover; /* 👈 llena el ancho sin deformar */
+    border-radius: 12px;
+  }
+
+  .producto-info {
+    width: 100%;
+    text-align: left;
+  }
+
+  #confirmar-compra {
+    width: 100%;
+    max-width: 280px;
+    margin: 1.5rem auto 0;
+  }
+}
