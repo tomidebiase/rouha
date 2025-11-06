@@ -83,6 +83,8 @@ const PRODUCT_RULES = {
   "remera-etereo": { talles: ["S", "M", "L"], tabla: "tabla-remera-etereo" },
   "remera-edgy": { talles: ["S", "M", "L"], tabla: "tabla-remera-edgy" },
   "remera-snow": { talles: ["S", "M", "L"], tabla: "tabla-remera-snow" },
+  "remera-boxy": { talles: ["S", "M", "L"], tabla: "tabla-remera-boxy" },
+
 };
 
 /* ===== Init Modal ===== */
